@@ -14,10 +14,13 @@ if (!MONGO_URI) {
 }
 
 mongoose.Promise = global.Promise;
-mongoose.connect(MONGO_URI);
+mongoose.connect(MONGO_URI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 mongoose.connection
-  .once("open", () => console.log("Connected to MongoLab instance."))
-  .on("error", (error) => console.log("Error connecting to MongoLab:", error));
+  .once("open", () => console.log("Connected to MongoDB instance."))
+  .on("error", (error) => console.log("Error connecting to MongoDB:", error));
 
 app.use(bodyParser.json());
 app.use(
@@ -28,8 +31,8 @@ app.use(
   })
 );
 
-const webpackMiddleware = require("webpack-dev-middleware");
 const webpack = require("webpack");
+const webpackMiddleware = require("webpack-dev-middleware");
 const webpackConfig = require("../webpack.config.js");
 app.use(webpackMiddleware(webpack(webpackConfig)));
 
