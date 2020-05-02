@@ -3,6 +3,8 @@ import gql from "graphql-tag";
 import { graphql } from "react-apollo";
 import { Link, hashHistory } from "react-router";
 
+import query from "../queries/fetchSongs";
+
 class SongCreate extends Component {
   constructor(props) {
     super(props);
@@ -12,9 +14,13 @@ class SongCreate extends Component {
   onSubmit(event) {
     event.preventDefault();
     this.props
-      .mutate({ variables: { title: this.state.title } })
-      .then((res) => {
-        console.log(res);
+      .mutate({
+        variables: { title: this.state.title },
+        // need this line of code to immediately refetch the list of songs after the mutation to add
+        // a new song succeeds. otherwise, a `warm cache` will be used to display the old (existing) song list
+        refetchQueries: [{ query }],
+      })
+      .then(() => {
         hashHistory.push("/");
       });
   }
