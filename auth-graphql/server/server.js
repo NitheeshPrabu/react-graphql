@@ -20,7 +20,10 @@ mongoose.Promise = global.Promise;
 
 // Connect to the mongoDB instance and log a message
 // on success or failure
-mongoose.connect(MONGO_URI);
+mongoose.connect(MONGO_URI, {
+  useUnifiedTopology: true,
+  useNewUrlParser: true,
+});
 mongoose.connection
   .once("open", () => console.log("Connected to MongoLab instance."))
   .on("error", (error) => console.log("Error connecting to MongoLab:", error));
@@ -36,7 +39,7 @@ app.use(
     saveUninitialized: true,
     secret: "aaabbbccc",
     store: new MongoStore({
-      url: MONGO_URI,
+      mongooseConnection: mongoose.connection,
       autoReconnect: true,
     }),
   })
