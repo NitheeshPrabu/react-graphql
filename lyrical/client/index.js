@@ -17,6 +17,7 @@ import SongDetail from "./components/SongDetail";
 const client = new ApolloClient({
   cache: new InMemoryCache(),
   link: new HttpLink({ uri: "http://localhost:4000/graphql" }),
+  dataIdFromObject: (o) => o.id, // to inform apollo to make sure to update the react components that use the `id` returned by a query/mutation
 });
 
 const Root = () => (

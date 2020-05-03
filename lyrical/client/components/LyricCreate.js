@@ -10,7 +10,6 @@ class LyricCreate extends Component {
 
   onSubmit(event) {
     event.preventDefault();
-
     this.props
       .mutate({
         variables: { content: this.state.content, songId: this.props.songId },
@@ -36,7 +35,9 @@ const mutation = gql`
     addLyricToSong(content: $content, songId: $songId) {
       id
       lyrics {
+        id
         content
+        likes
       }
     }
   }
